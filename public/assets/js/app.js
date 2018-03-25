@@ -58,3 +58,5 @@ $(function () {
 });
 
 //TODO: Write function called "setVizCards" that will -> for each Viz in our db, creates the following html element with the appropriate Viz data stored, and appends to the $("#viz-card-area") in the index.html. You'll need to make a <div class="row" id="first-row"> to start it off.
+
+function setVizCards
