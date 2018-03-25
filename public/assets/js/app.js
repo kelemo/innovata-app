@@ -42,9 +42,11 @@ var displayViz = function() {
     var vizData = cardContainer.attr("viz-data");
 
     $("#processing-display-area").empty();
-    //TODO: append a processing script containing the appropriate program according to vizType, sandwiching the vizData as input
-    $("#processing-display-area").append("<p>"+vizName+" by "+vizCreator+"</p><br><canvas data-processing-sources='processing/eternity.pde'></canvas>");
-    console.log("viz displayed");
+    if (vizType===1) {
+        //TODO: append a processing script containing the appropriate program according to vizType, sandwiching the vizData as input
+        $("#processing-display-area").append("<p>"+vizName+" by "+vizCreator+"</p><br><canvas data-processing-sources='processing/eternity.pde'></canvas>"); //this part isnt working
+        console.log("viz displayed");
+    }
 };
 
 $(function () {
@@ -54,9 +56,15 @@ $(function () {
     $(".viz-card").mouseenter(expandCard);
     $(".viz-card").mouseleave(minimizeCard);
     $(".viz-card-img").hover(sourceSwap);
-    $(".viz-card-img").click(displayViz); //this isnt working
+    $(".viz-card-img").click(displayViz);
 });
 
-//TODO: Write function called "setVizCards" that will -> for each Viz in our db, creates the following html element with the appropriate Viz data stored, and appends to the $("#viz-card-area") in the index.html. You'll need to make a <div class="row" id="first-row"> to start it off.
+var setVizCards = function(listViz) {
+    var vizCardArea = $("#viz-card-area");
+    vizCardArea.append("<div class='row'></div>");
+    for (i=0;i<listViz.length;i++) {
+        vizCardArea.append("<div class='col s2'><div class='card'><div class='card-image viz-card' viz-creator="+listViz[i].viz_creator+" viz-name="+listViz[i].viz_name+" viz-type="+listViz[i].viz_type+" viz-data="+listViz[i].viz_data+"><a href='display'><img class='viz-card-img z-depth-3 responsive-img' width='100' height='100' src='images/innovata-logo-outline.png' data-alt-src='images/innovata-logo-filled.png'></a></div></div></div>");
+    }
+};
 
-function setVizCards
+module.exports = setVizCards;

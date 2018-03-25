@@ -1,5 +1,6 @@
 var db = require("../models");
 var path = require("path");
+//var setViz = require("../public/assets/js/app.js"); //doesnt like this line
 
 module.exports = function(app){
 
@@ -8,6 +9,7 @@ module.exports = function(app){
             order: ['viz_name']
         }).then(function(dbViz){
             //TODO: create viz-cards for each Viz in our db and send to index
+            //setViz(dbViz);
             res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
         });
     });
@@ -26,10 +28,6 @@ module.exports = function(app){
             viz_name: req.body.viz_name,
             viz_type: req.body.viz_type,
             viz_data: req.body.viz_data
-        }).then(function() {
-            res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
-        }).catch(function(err) {
-            res.json(err);
         });
     });
 
