@@ -10,7 +10,7 @@ var bodyParser = require("body-parser");
 // Sets up the Express App
 // =============================================================
 var app = express();
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 
 // Requiring our models for syncing
 var db = require("./models");
@@ -24,6 +24,11 @@ app.use(bodyParser.json());
 
 // Static directory
 app.use(express.static("public"));
+app.use('/css',express.static( 'public/assets/css'));
+app.use('/fonts',express.static( 'public/assets/fonts'));
+app.use('/js',express.static( 'public/assets/js'));
+app.use('/images',express.static( 'public/assets/images'));
+app.use('/processing',express.static( 'public/assets/processing'));
 
 // Routes
 // =============================================================

@@ -1,23 +1,33 @@
 var db = require("../models");
+var path = require("path");
 
 module.exports = function(app){
 
     app.get("/", function(req, res) {
         db.Viz.findAll({
             order: ['viz_name']
-        }).then(function(){
-                res.render("../html/index");
+        }).then(function(dbViz){
+            //TODO: create viz-cards for each Viz in our db and send to index
+            res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
         });
     });
 
-    app.post("/api/vizs", function(req, res) {
+    app.get("/create", function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/assets/html/add.html"));
+    });
+
+    app.get("/display", function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/assets/html/display.html"));
+    });
+
+    app.post("/api/new", function(req, res) {
         db.Viz.create({
             viz_creator: req.body.viz_creator,
             viz_name: req.body.viz_name,
             viz_type: req.body.viz_type,
             viz_data: req.body.viz_data
         }).then(function() {
-            res.render("../html/index");
+            res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
         }).catch(function(err) {
             res.json(err);
         });

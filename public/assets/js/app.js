@@ -32,9 +32,19 @@ var minimizeCard = function() {
 };
 
 //Displays Viz on display.html
-//TODO: alter so that it takes in the appropriate data-attributes from the viz-card being clicked, creating the appropriate visualization.
 var displayViz = function() {
-    $("#processing-display-area").append("<canvas data-processing-sources='processing/eternity.pde'></canvas>")
+    var $this = $(this);
+    var cardContainer = $this.parent().parent();
+
+    var vizCreator = cardContainer.attr("viz-creator");
+    var vizName = cardContainer.attr("viz-name");
+    var vizType = cardContainer.attr("viz-type");
+    var vizData = cardContainer.attr("viz-data");
+
+    $("#processing-display-area").empty();
+    //TODO: append a processing script containing the appropriate program according to vizType, sandwiching the vizData as input
+    $("#processing-display-area").append("<p>"+vizName+" by "+vizCreator+"</p><br><canvas data-processing-sources='processing/eternity.pde'></canvas>");
+    console.log("viz displayed");
 };
 
 $(function () {
@@ -44,17 +54,7 @@ $(function () {
     $(".viz-card").mouseenter(expandCard);
     $(".viz-card").mouseleave(minimizeCard);
     $(".viz-card-img").hover(sourceSwap);
-    $(".viz-card-img").on("click", function() {
-        displayViz;
-    });
+    $(".viz-card-img").click(displayViz); //this isnt working
 });
 
 //TODO: Write function called "setVizCards" that will -> for each Viz in our db, creates the following html element with the appropriate Viz data stored, and appends to the $("#viz-card-area") in the index.html. You'll need to make a <div class="row" id="first-row"> to start it off.
-//<div class="col s2">
-//  <div class="card">
-//      <div class="card-image">
-//         <img src="http://via.placeholder.com/100x100" id="viz-card" viz_id="" viz_type="" viz_user="">
-//      </div>
-//  </div>
-//</div>
-// TODO: If there are more than 6 Viz's, you'll need the logic that says"have a div row for each 6 Viz's", so make a new div row (ex: <div class="row" id="second-row">) and append the next 6 Viz's there.

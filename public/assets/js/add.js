@@ -26,28 +26,29 @@ $(function () {
     $("#logo-space").mouseleave(minimizeLogo);
 
     //When submit button is clicked, takes inputs and stores the newViz in our db via a sequelize function.
-    $("#submit-btn").on("click", function() {
+    $("#submit-btn").on("click", function(event) {
+        event.preventDefault();
         console.log("submit button was clicked");
-        var userInput = $("#viz-user-input").val().trim();
-        var nameInput = $("#viz-name-input").val().trim();
-        var typeInput = $("#viz-type-input").val().trim();
-        var dataInput = $("#viz-data-input").val().trim();
+        var userInput = $("#viz-user-input");
+        var nameInput = $("#viz-name-input");
+        var typeInput = $("#viz-type-input");
+        var dataInput = $("#viz-data-input");
         var newViz = {
-            viz_creator: userInput,
-            viz_name: nameInput,
-            viz_type: typeInput,
-            viz_data: dataInput
+            viz_creator: userInput.val().trim(),
+            viz_name: nameInput.val().trim(),
+            viz_type: typeInput.val().trim(),
+            viz_data: dataInput.val().trim()
         };
-        userInput.val("");
-        nameInput.val("");
-        typeInput.val("");
-        dataInput.val("");
 
-        $.ajax("/api/vizs", {
+        $.ajax("/api/new", {
             type: "POST",
             data: newViz
         }).then(function() {
-           window.location = "index.html";
+            console.log(newViz);
+            userInput.val("");
+            nameInput.val("");
+            typeInput.val("");
+            dataInput.val("");
         });
 
     });
