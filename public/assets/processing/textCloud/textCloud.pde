@@ -1,31 +1,100 @@
-//Font-related
-PFont font;
-String fontFile = "processing/fonts/ArialRoundedMTBold-96.vlw";
-int fSize = 96;
-int maxSize = 192;
-int minSize = 48;
-//Text-input, sample excerpt from A Tale of Two Cities by Charles Dickens
-String textData = "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way--in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only. There were a king with a large jaw and a queen with a plain face, on the throne of England; there were a king with a large jaw and a queen with a fair face, on the throne of France. In both countries it was clearer than crystal to the lords of the State preserves of loaves and fishes, that things in general were settled for ever. It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritual revelations were conceded to England at that favoured period, as at this. Mrs. Southcott had recently attained her five-and-twentieth blessed birthday, of whom a prophetic private in the Life Guards had heralded the sublime appearance by announcing that arrangements were made for the swallowing up of London and Westminster. Even the Cock-lane ghost had been laid only a round dozen of years, after rapping out its messages, as the spirits of this very year last past (supernaturally deficient in originality) rapped out theirs. Mere messages in the earthly order of events had lately come to the English Crown and People, from a congress of British subjects in America: which, strange to relate, have proved more important to the human race than any communications yet received through any of the chickens of the Cock-lane brood.";
-//Word-counting-related
-String[] words;
-int[] count;
-int most;
-int least;
-float currentSize;
-int currentIndex;
+//Word Array
+String[] words = {"was", "the", "of", "it", "times", "age", "epoch", "season", "It", "best", "worst", "wisdom", "foolishness", "belief", "incredulity", "Light", "Darkness", "spring", "hope"};
+//Count Array
+int[] counts = {9, 9, 9, 8, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+//Graphics Array
+Word[] graphics = new Word[counts.length];
+
+PFont myFont;
+int maxSize=300;
+int totalCounts=0;
+int sizeDiff=0;
 
 void setup() {
-  size(800,600);
-  colorMode(HSB, TWO_PI, 1, 1, 1);
-  rectMode(CORNER);
-  background(color(0,0,1));
-  smooth();
-  font = loadFont(fontFile);
-  initializeWords();
-  noLoop();
+    size(500,300);
+    colorMode(RGB, 255);
+    background(0);
+    initializeGraphics();
+    adjustPositions();
+    noLoop();
 }
 
-void initializeWords() {
-  ArrayList ignore = new ArrayList();
-  String[] ignoreStrs = 
+void draw() {
+  for (int i=0;i<graphics.length;i++){
+    graphics[i].drawGraphic();
+    image(graphics[i].graphic, 0,0);
+  }
+}
+
+void initializeGraphics() {
+  myFont = createFont("Impact", 50 );
+    for (int i=0;i<counts.length;i++){
+      totalCounts+=counts[i];
+    }
+    sizeDiff=maxSize/totalCounts;
+    for (int i = 0; i < counts.length; i++) {
+      graphics[i] = new Word(words[i], sizeDiff*counts[i],width/2, height/2, 255);
+    }
+}
+
+void adjustPositions() {
+  boolean finished = true;
+  for (int i=0;i<counts.length-1;i++){
+    Word currWord = graphics[i];
+    Word nextWord = graphics[i+1];
+    if (nextWord.ypos+nextWord.wordheight/2 >= currWord.ypos-currWord.wordheight/2) {
+      nextWord.ypos = currWord.ypos-currWord.wordheight/2-nextWord.wordheight/2;
+    }
+    //if (nextWord.ypos+nextWord.wordheight/2 <= currWord.ypos+currWord.wordheight/2 && nextWord.ypos-nextWord.wordheight/2 >= currWord.ypos-currWord.wordheight/2 && nextWord.xpos+nextWord.wordlength/2 <= currWord.xpos+currWord.wordlength/2 && nextWord.xpos-nextWord.wordlength/2 >= currWord.xpos-currWord.wordlength/2){
+    //  float rand = random(4);
+    //  if (rand==0){
+    //    nextWord.ypos+=200;
+    //  }
+    //  else if (rand==1){
+    //    nextWord.ypos-=200;
+    //  }
+    //  else if (rand==2){
+    //    nextWord.xpos+=200;
+    //  }
+    //  else if (rand==3){
+    //    nextWord.xpos+=200;
+    //  }
+    //  finished = false;
+    //}
+    //if (finished == false){
+    //  adjustPositions();
+    //}
+  }
+}
+
+class Word {
+  String wordString;
+  PGraphics graphic;
+  int wordlength;
+  int wordheight;
+  int tsize;
+  int xpos;
+  int ypos;
+  int fillcol;
+  
+  Word(String w, int t, int x, int y, int f) {
+    wordString = w;
+    tsize = t;
+    wordlength = tsize*wordString.length();
+    wordheight = tsize;
+    xpos = x;
+    ypos = y;
+    fillcol = f;
+    graphic = createGraphics(width, height, JAVA2D);
+  }
+  
+  void drawGraphic() {
+    graphic.beginDraw();
+    graphic.smooth();
+    graphic.fill(fillcol);
+    graphic.textAlign(CENTER, CENTER);
+    graphic.textFont(myFont, tsize);
+    graphic.text(wordString, xpos, ypos);
+    graphic.endDraw();
+  }
 }
