@@ -28,17 +28,19 @@ $(function () {
     //When submit button is clicked, takes inputs, stores them in an object, and posts.
     $("#submit-btn").on("click", function(event) {
         event.preventDefault();
-        console.log("submit button was clicked");
         var userInput = $("#viz-user-input");
         var nameInput = $("#viz-name-input");
         var typeInput = $("#viz-type-input");
         var dataInput = $("#viz-data-input");
+        var convertedData = dataInput.val().trim();
+        convertedData = convertedData.replace(/\b[-.,()&$#!\[\]{}"']+\B|\B[-.,()&$#!\[\]{}"']+\b/g, "");
+        convertedData = "'"+convertedData+"'";
 
         var newViz = {
             viz_creator: userInput.val().trim(),
             viz_name: nameInput.val().trim(),
             viz_type: typeInput.val().trim(),
-            viz_data: dataInput.val().trim()
+            viz_data: convertedData
         };
 
         userInput.val("");
