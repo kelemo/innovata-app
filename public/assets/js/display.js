@@ -41,12 +41,12 @@ function createDisplay(creator, name, type, data) {
         console.log(wordsString);
         console.log(count);
         //Now we can generate our processing script with the arrays as inputs
-        runProcessing(wordsString, count, name, creator);
+        runProcessing(wordsString, count, name, creator, type);
     }
 }
 
-function runProcessing(wordString, countString, vizName, vizCreator) {
-    var label = "<h4>"+vizName+" by "+vizCreator+"</h4><br>";
+function runProcessing(wordString, countString, vizName, vizCreator, vizType) {
+    var label = "<h4>"+vizName+" by "+vizCreator+" via "+vizType+"</h4><br>";
     var scriptStart = "<script type='application/processing' data-processing-target='visualization'>";
     var scriptEnd = "</script>";
     var canvas = "<canvas id='visualization'></canvas>";
