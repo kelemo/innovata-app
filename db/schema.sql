@@ -1,2 +1,3 @@
-DROP DATABASE IF EXISTS innovata_db;
 CREATE DATABASE innovata_db;
+
+USE innovata_db;
