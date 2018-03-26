@@ -1,9 +1,18 @@
-$(document).ready(function() {
-    // Initializes drop-down menus
-    $('select').material_select();
+//Dynamically generates the processing-display appropriate to the viz-card that was pressed.
+function createDisplay(creator, name, type, data) {
+    $("#processing-display-area").empty();
+    if (parseInt(type)===1) {
+        //TODO: append a processing script containing the appropriate program according to vizType, sandwiching the vizData as input
+        $("#processing-display-area").append("<h4>"+name+" by "+creator+"</h4><br><canvas data-processing-sources='processing/eternity.pde'></canvas>");
+    }
+}
+
+//Retrieves info from the viz-card that was clicked, and creates a display on display.html
+$.get("/api/display", function(data) {
+    createDisplay(data.creator, data.name, data.type, data.data);
 });
 
-//Logo fills on hover.
+//Img swap on hover.
 var sourceSwap = function () {
     var $this = $(this);
     var newSource = $this.data('alt-src');
@@ -24,31 +33,4 @@ $(function () {
     $("#logo-img").hover(sourceSwap, sourceSwap);
     $("#logo-img").mouseenter(expandLogo);
     $("#logo-space").mouseleave(minimizeLogo);
-
-    //When submit button is clicked, takes inputs, stores them in an object, and posts.
-    $("#submit-btn").on("click", function(event) {
-        event.preventDefault();
-        console.log("submit button was clicked");
-        var userInput = $("#viz-user-input");
-        var nameInput = $("#viz-name-input");
-        var typeInput = $("#viz-type-input");
-        var dataInput = $("#viz-data-input");
-
-        var newViz = {
-            viz_creator: userInput.val().trim(),
-            viz_name: nameInput.val().trim(),
-            viz_type: typeInput.val().trim(),
-            viz_data: dataInput.val().trim()
-        };
-
-        userInput.val("");
-        nameInput.val("");
-        typeInput.val("");
-        dataInput.val("");
-
-        $.ajax("/api/new", {
-            type: "POST",
-            data: newViz
-        });
-    });
 });

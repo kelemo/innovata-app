@@ -1,17 +1,32 @@
 var db = require("../models");
 var path = require("path");
-//var setViz = require("../public/assets/js/app.js"); //doesnt like this line
 
 module.exports = function(app){
 
+    var vizDisplay;
+
     app.get("/", function(req, res) {
-        db.Viz.findAll({
-            order: ['viz_name']
-        }).then(function(dbViz){
-            //TODO: create viz-cards for each Viz in our db and send to index
-            //setViz(dbViz);
-            res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
+        res.sendFile(path.join(__dirname, "../public/assets/html/index.html"));
+    });
+
+    app.get("/api/gallery", function(req, res) {
+        db.Viz.findAll({}).then(function(results) {
+            res.json(results);
         });
+    });
+
+    app.get("/api/display", function(req, res) {
+        res.json(vizDisplay);
+    });
+
+    app.post("/api/display", function(req, res) {
+        var currentDisplay = {
+            creator: req.body.creator,
+            name: req.body.name,
+            type: req.body.type,
+            data: req.body.data
+        };
+        vizDisplay = currentDisplay;
     });
 
     app.get("/create", function(req, res) {
