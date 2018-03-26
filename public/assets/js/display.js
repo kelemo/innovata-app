@@ -40,8 +40,9 @@ function createDisplay(creator, name, type, data) {
         count = "{"+count.toString()+"}";
         console.log(wordsString);
         console.log(count);
+        var vizTypeString = "Text Flow";
         //Now we can generate our processing script with the arrays as inputs
-        runProcessing(wordsString, count, name, creator, type);
+        runProcessing(wordsString, count, name, creator, vizTypeString);
     }
 }
 
