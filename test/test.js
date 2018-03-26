@@ -2,25 +2,32 @@ var Nightmare = require("nightmare");
 
 // STORY: As a developer nerd, I want to be able to take courses on web tech.
 new Nightmare({ show: true })
-  // Visit login page
-  .goto("localhost:3000")
+  // Visit home page and make that clicking the logo brings you to the correct link (just back to home page)
+  .viewport(800, 600)
+  .goto("https://innovata.herokuapp.com/")
   .click("#logo-space")
   .screenshot("homepage.png")
-//   // Enter username.
-//   .type("#user_login", "ResilD")
-//   // Enter password.
-//   .type("#login__user_password", "dummy*password")
-//   // Take a screenshot of the login form.
-//   .screenshot("login.png")
-//   // Click login button. Always check if you've done this where necessary!
-//   // It's easy to forget.
-//   .click("#user_submit")
-//   // Click course catalog link.
-//   .click("a[href='/catalog']")
-//   // Scroll down a few hundred pixels.
-//   .scrollTo(500, 0)
-//   // Take a screenshot and save it to the current directory.
-//   .screenshot("courses.png")
+
+  //check to make you can get to the create page from home page and then input values. Take screenshot.
+  .click("a[href='/create']")
+  .type("#viz-user-input", "billy bob")
+  .type("#viz-name-input", "nightmare test viz")
+  .click("input[class='select-dropdown']")
+  .type("#viz-data-input", "this is a nightmare test")
+  .screenshot("createPage.png")
+
+  //go back to  the home page through return button
+  .click("button[id='return-btn']")
+  .screenshot('homepage2.png')
+
+  //then hover over logo and take screen shot
+  .mouseover("#logo-img")
+  .screenshot('imagehover.png')
+
+  //click on one of viz's and travel to page, take screen shot
+  .click("a[href='/display']")
+  .screenshot('avizpage.png')
+
   // End test
   .end()
   // Execute commands
