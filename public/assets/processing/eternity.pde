@@ -6,16 +6,20 @@ int a = 100;
 float c1 = 255;
 float c2 = 255;
 float c3 = 255;
+boolean button = false;
 
 void setup() {
-    background(236,239,241);
-  size(600, 400);
-  colorMode(RGB, 100);
+    background(84,110,122);
+  size(500, 300);
+  colorMode(RGB, 255);
   noFill();
+  text("Click for something happen", 350, 250);
 }
 
 void draw() {
-  //background(0);
+    if (button === true) {
+        background(84,110,122);
+        }
   for (int i=0;i<4;i++){
     float r = a*cos(radians(angle));
     if (i==1){
@@ -46,3 +50,12 @@ void draw() {
   stroke(c1, c2, c3);
   angle+=2;
 }
+
+void mousePressed() {
+    if (button === true) {
+        button = false;
+        }
+        else {
+        button = true;
+        }
+        }
