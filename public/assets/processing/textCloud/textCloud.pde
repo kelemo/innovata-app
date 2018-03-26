@@ -6,9 +6,11 @@ int[] counts = {9, 9, 9, 8, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 Word[] graphics = new Word[counts.length];
 
 PFont myFont;
-int maxSize=300;
+int maxSize=counts.length*10;
 int totalCounts=0;
 int sizeDiff=0;
+
+boolean button = false;
 
 void setup() {
     size(500,300);
@@ -20,9 +22,13 @@ void setup() {
 }
 
 void draw() {
+  if (button==true) {
+      textFlow();
+      button = false;
+    }
   for (int i=0;i<graphics.length;i++){
     graphics[i].drawGraphic();
-    image(graphics[i].graphic, 0,0);
+    image(graphics[i].graphic, 0, 0);
   }
 }
 
@@ -38,33 +44,31 @@ void initializeGraphics() {
 }
 
 void adjustPositions() {
-  boolean finished = true;
   for (int i=0;i<counts.length-1;i++){
     Word currWord = graphics[i];
     Word nextWord = graphics[i+1];
     if (nextWord.ypos+nextWord.wordheight/2 >= currWord.ypos-currWord.wordheight/2) {
       nextWord.ypos = currWord.ypos-currWord.wordheight/2-nextWord.wordheight/2;
     }
-    //if (nextWord.ypos+nextWord.wordheight/2 <= currWord.ypos+currWord.wordheight/2 && nextWord.ypos-nextWord.wordheight/2 >= currWord.ypos-currWord.wordheight/2 && nextWord.xpos+nextWord.wordlength/2 <= currWord.xpos+currWord.wordlength/2 && nextWord.xpos-nextWord.wordlength/2 >= currWord.xpos-currWord.wordlength/2){
-    //  float rand = random(4);
-    //  if (rand==0){
-    //    nextWord.ypos+=200;
-    //  }
-    //  else if (rand==1){
-    //    nextWord.ypos-=200;
-    //  }
-    //  else if (rand==2){
-    //    nextWord.xpos+=200;
-    //  }
-    //  else if (rand==3){
-    //    nextWord.xpos+=200;
-    //  }
-    //  finished = false;
-    //}
-    //if (finished == false){
-    //  adjustPositions();
-    //}
   }
+}
+
+void textFlow() {
+  for (int i=0;i<counts.length-1;i++){
+    Word currWord = graphics[i];
+    Word nextWord = graphics[i+1];
+    if (currWord.ypos+currWord.wordheight/2 < height){
+      currWord.ypos = currWord.ypos + currWord.wordheight;
+    }
+    else {
+      currWord.graphic.fill(0);
+    }
+    nextWord.ypos = nextWord.ypos + currWord.wordheight;
+  }
+}
+
+void mouseClicked() {
+  button = true;
 }
 
 class Word {
@@ -90,6 +94,7 @@ class Word {
   
   void drawGraphic() {
     graphic.beginDraw();
+    graphic.clear();
     graphic.smooth();
     graphic.fill(fillcol);
     graphic.textAlign(CENTER, CENTER);

@@ -57,7 +57,7 @@ function runProcessing(wordString, countString, vizName, vizCreator, vizType) {
         'int[] counts = '+countString+';\n' +
         'Word[] graphics = new Word[counts.length];\n' +
         'PFont myFont;\n' +
-        'int maxSize=200;\n' +
+        'int maxSize=counts.length*10;\n' +
         'int totalCounts=0;\n' +
         'int sizeDiff=0;\n' +
 
